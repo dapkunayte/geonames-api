@@ -22,6 +22,7 @@ geo_objects = [geo_objects_tuple(*geo_object.strip().split("\t")) for geo_object
 
 max_number = 100  # предполагаем, что максимальное количество городов на странице равняется 100
 max_page = math.ceil(len(geo_objects) / max_number)  # максимальное количество страниц
+print(max_page)
 max_page_max_number = len(geo_objects) % max_number  # максимальное количество городов на последней странице
 
 
@@ -32,9 +33,11 @@ def page_not_found(error):
 
 @app.route('/api/get_by_id/<int:town_id>', methods=["GET"])
 def town_info(town_id):
+    is_found = False
     for geo_object in geo_objects:
         if int(geo_object.GeonameId) == town_id:
             return jsonify({"town": geo_object._asdict()})
+    return make_response(jsonify({'error': 'Not found'}), 404)  # если города не было найдено
 
 
 @app.route('/api/towns_info/<town1>/<town2>', methods=["GET"])
@@ -87,6 +90,8 @@ def town_clue(town1):
             for alternate_town in geo_object.AlternateNames.split(','):  # проход по циклу их альтернативных названий
                 if town1 in alternate_town:  # если введенная часть города есть в строке альтернативного названия
                     similar_towns.append(alternate_town)  # считаем, что название города подходит под подсказку
+    if len(similar_towns) == 0:  # если похожих городов не было найдено
+        return make_response(jsonify({'error': 'Not found'}), 404)
     return jsonify({"towns": similar_towns})
 
 
