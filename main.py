@@ -110,7 +110,7 @@ def towns_list(page, number):
             return jsonify({"towns": geo_objects_seq})
         else:
             return make_response(jsonify({'error': 'Not found'}), 404)
-    elif page == max_page:  # убедиться, что реально входит в максимум, а не за один шаг до него
+    elif page == max_page:
         if number <= max_page_max_number:
             start_towns = (max_page - 1) * max_number
             stop_towns = (max_page - 1) * max_number + number
