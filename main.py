@@ -11,7 +11,7 @@ app.config['JSON_AS_ASCII'] = False
 file = open("RU.txt", "r", encoding="utf8")
 geo_object_list = file.readlines()
 file.close()
-# объявление именованного кортежа, который соответсвует набору данных
+# объявление именованного кортежа, который соответствует набору данных
 geo_objects_tuple = namedtuple('GeoObject',
                                'GeonameId,Name,AsciiName,AlternateNames,Latitude,Longitude,FeatureClass,FeatureCode,'
                                'CountryCode,Cc2,Admin1Code,Admin2Code,Admin3Code,Admin4Code,Population,Elevation,Dem,'
@@ -45,7 +45,7 @@ def towns_info(town1, town2):
     found_town1 = None
     found_town2 = None
     for geo_object in geo_objects:
-        # если указанный город (на русском) присутсвует в списке альтернативных названий города
+        # если указанный город (на русском) присутствует в списке альтернативных названий города
         if town1 in geo_object.AlternateNames.split(","):
             if found_town1 is None:
                 found_town1 = geo_object
@@ -106,7 +106,7 @@ def towns_list(page, number):
     if page < max_page:
         if number <= max_number:
             start_towns = (page - 1) * max_number  # если страница = 1 , то срез начинается с 0, если 2, то со 100 и т.д
-            stop_towns = (page - 1) * max_number + number  # если страница = 1, то срез оканчиваентся на 0 + число и т.д
+            stop_towns = (page - 1) * max_number + number  # если страница = 1, то срез оканчивается на 0 + число и т.д
             geo_objects_seq = [geo_object._asdict() for geo_object in geo_objects[start_towns:stop_towns]]
             return jsonify({"towns": geo_objects_seq})
         else:
