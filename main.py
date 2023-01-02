@@ -33,7 +33,6 @@ def page_not_found(error):
 
 @app.route('/api/get_by_id/<int:town_id>', methods=["GET"])
 def town_info(town_id):
-    is_found = False
     for geo_object in geo_objects:
         if int(geo_object.GeonameId) == town_id:
             return jsonify({"town": geo_object._asdict()})
